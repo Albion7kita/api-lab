@@ -1,12 +1,25 @@
-# API Lab
 
-## Description
-This project uses the Open-Meteo API to fetch weather data.
+# CS 335 — Assignment 01: API Lab
+**Introduction to Artificial Intelligence — Northeastern Illinois University**
 
-## How to run
-python3 main.py
+---
 
-## Features
-- Current weather in multiple cities
-- Forecast data
-- API error handling
+## Overview
+This project uses the Open-Meteo API to retrieve real-time weather data.  
+It makes multiple API calls and prints results in the terminal.
+
+---
+
+## API Used
+Open-Meteo Weather API  
+- Free to use  
+- No API key required  
+- Provides real-time weather data
+
+---
+
+## How to Run
+
+Install dependencies:
+```bash
+pip install -r requirements.txt
