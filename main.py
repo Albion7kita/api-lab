@@ -1,65 +1,94 @@
-import requests
+# CS 335 — Introduction to Artificial Intelligence
+# API Assignment Starter Code — Northeastern Illinois University
+
+import os
 import json
+import requests
+from dotenv import load_dotenv
 
-def get_data(url, params=None):
-    try:
-        response = requests.get(url, params=params)
+load_dotenv()
 
-        if response.status_code == 200:
-            return response.json()
-        else:
-            print(f"Error: {response.status_code}")
-            return None
+API_KEY = os.getenv("MY_API_KEY")
 
-    except Exception as e:
-        print("Request failed:", e)
-        return None
+if not API_KEY:
+    print("WARNING: No API key found (not needed for Open-Meteo)")
 
+BASE_URL = "https://api.open-meteo.com/v1/forecast"
 
-url = "https://api.open-meteo.com/v1/forecast"
-
-# Call 1: Chicago
-params = {
-    "latitude": 41.88,
-    "longitude": -87.63,
-    "current_weather": True
+HEADERS = {
+    "Content-Type": "application/json"
 }
 
-data = get_data(url, params)
 
-if data:
-    weather = data["current_weather"]
-    print("\nChicago Weather:")
-    print(f"Temperature: {weather['temperature']}°C")
-    print(f"Wind Speed: {weather['windspeed']} km/h")
+def divider(label):
+    print(f"\n{'=' * 50}\n{label}\n{'=' * 50}")
 
 
-# Call 2: Forecast
-params = {
-    "latitude": 41.88,
-    "longitude": -87.63,
-    "daily": "temperature_2m_max,temperature_2m_min",
-    "timezone": "auto"
-}
+# ── Call 1: GET request ───────────────────────────────────
+def call_one_get():
+    divider("CALL 1 — Chicago Weather")
 
-data = get_data(url, params)
+    url = BASE_URL
+    params = {
+        "latitude": 41.88,
+        "longitude": -87.63,
+        "current_weather": True
+    }
 
-if data:
-    print("\nForecast:")
-    print(json.dumps(data["daily"], indent=2))
+    response = requests.get(url, headers=HEADERS, params=params)
+
+    if response.status_code == 200:
+        print(json.dumps(response.json()["current_weather"], indent=2))
+    else:
+        print(f"[ERROR] {response.status_code}")
 
 
-# Call 3: New York
-params = {
-    "latitude": 40.71,
-    "longitude": -74.00,
-    "current_weather": True
-}
+# ── Call 2: POST request ─────────────
+def call_two_post():
+    divider("CALL 2 — New York Weather")
 
-data = get_data(url, params)
+    url = BASE_URL
+    payload = {
+        "latitude": 40.71,
+        "longitude": -74.00,
+        "current_weather": True
+    }
 
-if data:
-    weather = data["current_weather"]
-    print("\nNew York Weather:")
-    print(f"Temperature: {weather['temperature']}°C")
-    print(f"Wind Speed: {weather['windspeed']} km/h")
+    response = requests.get(url, headers=HEADERS, params=payload)
+
+    if response.status_code == 200:
+        print(json.dumps(response.json()["current_weather"], indent=2))
+    else:
+        print(f"[ERROR] {response.status_code}")
+
+
+# ── Call 3: Parameterized POST ────────────────────────────
+def call_three_parameterized(user_input: str):
+    divider(f"CALL 3 — Parameterized ({user_input})")
+
+    url = BASE_URL
+
+    if user_input.lower() == "chicago":
+        lat, lon = 41.88, -87.63
+    else:
+        lat, lon = 40.71, -74.00
+
+    params = {
+        "latitude": lat,
+        "longitude": lon,
+        "current_weather": True
+    }
+
+    response = requests.get(url, headers=HEADERS, params=params)
+
+    if response.status_code == 200:
+        print(json.dumps(response.json()["current_weather"], indent=2))
+    else:
+        print(f"[ERROR] {response.status_code}")
+
+
+if __name__ == "__main__":
+    call_one_get()
+    call_two_post()
+    call_three_parameterized("Chicago weather loaded successfully")
+    
