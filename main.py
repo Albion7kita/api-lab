@@ -90,5 +90,4 @@ def call_three_parameterized(user_input: str):
 if __name__ == "__main__":
     call_one_get()
     call_two_post()
-    call_three_parameterized("Chicago weather loaded successfully")
-    
+    call_three_parameterized("Miami weather loaded successfully")
