@@ -21,5 +21,7 @@ Open-Meteo Weather API
 ## How to Run
 
 Install dependencies:
-```bash
 pip install -r requirements.txt
+
+Run the program:
+python3 main.py
